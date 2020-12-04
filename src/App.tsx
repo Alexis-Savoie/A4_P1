@@ -1,44 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import axios from 'axios';
+import "./App.css"
+import { Map } from "../src/Components/Map"
+import { Header } from "../src/Components/Header/index"
+import React from "react"
 
 
+// import { Route, Switch } from 'react-router';
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+
+
+
+
+import { Button } from '@material-ui/core';
+import { Register } from './Components/Register/index';
+
+// Conversion du Hook en classù
 function App() {
-  testAxios()
   return (
     <div className="App">
-      
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React (TEST)
-        </a>
+        <Header />
+        <Register />
+        <Map />
+
       </header>
     </div>
-  );
-
-  
+  )
 }
 
-
-function testAxios() {
-  axios.get(`http://localhost:8020/test`)
-      .then(res => {
-          console.log("Ceci est un test !")
-          console.log(res.data)
-      })
-  }
-
-
-
-
-export default App;
+export default App
