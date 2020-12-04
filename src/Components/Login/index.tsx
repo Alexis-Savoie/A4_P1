@@ -53,14 +53,14 @@ export class Login extends React.PureComponent {
         // Avoir to reload the page
         e.preventDefault()
         
-        const data = { // définir les data à envoyer
+        const data = { 
             email: this.state.email.trim(),
             password: this.state.password.trim(),
         }
         axios.post(`http://localhost:8020/login`, data)
             .then(res => {
                 console.log(res.data)
-                localStorage.setItem('currentUser', JSON.stringify(res.data)); // stock les informations de l'utilisateurs en front
+                localStorage.setItem('currentUser', JSON.stringify(res.data)); 
             })
             .catch(error => {
                 console.log(error.response.data)
