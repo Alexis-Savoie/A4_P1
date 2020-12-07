@@ -29,8 +29,9 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
 
 
     render() {
+        const { classes } = this.props;
         return (
-            <div>
+            <div className={classes.root}>
 
                 <h2>Login</h2>
                 <form onSubmit={this.login}>

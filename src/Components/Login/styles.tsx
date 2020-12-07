@@ -1,6 +1,6 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type loginStyles = "root"; // add class create
+export type loginStyles = ("root"); // add class create
 
 export default (theme: Theme) => createStyles<loginStyles, {}>({
     root: {
@@ -10,7 +10,7 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
         minHeight: '64px',
         alignItems: 'center',
         backgroundColor: '#fff',
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     }
 
 });

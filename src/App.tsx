@@ -34,12 +34,12 @@ function App() {
           </a>
           </header>
         )} />
-           <Route exact={true} path="/login">
-                <Login.Display />
-            </Route>
-            <Route exact={true} path="/register">
-                <Register.Display />
-            </Route>
+        <Route exact={true} path="/login">
+          <Login.Display />
+        </Route>
+        <Route exact={true} path="/register">
+          <Register.Display />
+        </Route>
 
       </Switch>
     </BrowserRouter>
