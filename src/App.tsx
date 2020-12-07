@@ -34,22 +34,12 @@ function App() {
           </a>
           </header>
         )} />
-                <Route exact={true} path={'/login'} render={() => (
-          <div className="App">
-            <header className="App-header">
-              <Login />
-              <Map />
-            </header>
-          </div>
-        )} />
-        <Route exact={true} path={'/register'} render={() => (
-          <div className="App">
-            <header className="App-header">
-              <Register />
-              <Map />
-            </header>
-          </div>
-        )} />
+           <Route exact={true} path="/login">
+                <Login.Display />
+            </Route>
+            <Route exact={true} path="/register">
+                <Register.Display />
+            </Route>
 
       </Switch>
     </BrowserRouter>
