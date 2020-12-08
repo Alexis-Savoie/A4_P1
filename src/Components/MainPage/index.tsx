@@ -1,12 +1,11 @@
 import * as React from 'react'
-import { Route, Redirect } from  "react-router-dom";
 import styles, { loginStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
-import history from '../../history'
+
 
 
 
@@ -18,11 +17,11 @@ interface S {
 }
 
 
-export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
+export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S> {
 
 
 
-    public static Display = withStyles(styles as any)(Login) as React.ComponentType<P>
+    public static Display = withStyles(styles as any)(MainPage) as React.ComponentType<P>
 
     public state: Readonly<S> = {
         email: "",
@@ -36,7 +35,7 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
             <div>
                 <Grid container className={classes.container}>
                     <Grid item className={classes.title}>
-                        <h2>Se connecter</h2>
+                        <h2>Se connecter (MainPage)</h2>
                     </Grid>
 
 
@@ -75,6 +74,7 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
     login = (e: React.FormEvent<HTMLFormElement>) => {
         // Avoir to reload the page
         e.preventDefault()
+
         const data = {
             email: this.state.email.trim(),
             password: this.state.password.trim(),
@@ -82,8 +82,7 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
         axios.post(`http://localhost:8020/login`, data)
             .then(res => {
                 console.log(res.data.message)
-                localStorage.setItem('currentUserToken', res.data.token);
-                history.push('/mainpage');
+                localStorage.setItem('currentUserToken', JSON.stringify(res.data.token));
             })
             .catch(error => {
                 if (error.reponse)
