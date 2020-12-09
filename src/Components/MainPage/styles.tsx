@@ -8,7 +8,7 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
         flex: 1,
         flexDirection: "column",
 
-        height: '100vh',
+        
         alignItems: 'center',
         justifyContent: 'center'
     },

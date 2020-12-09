@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Route, Redirect } from  "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import styles, { loginStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
@@ -77,26 +77,31 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
         e.preventDefault()
         const data = {
             email: this.state.email.trim(),
-            password: this.state.password.trim(),
+            password: this.state.password,
         }
-        axios.post(`http://localhost:8020/login`, data)
-            .then(res => {
-                console.log(res.data.message)
-                localStorage.setItem('currentUserToken', res.data.token);
-                history.push('/mainpage');
-            })
-            .catch(error => {
-                if (error.reponse)
-                {
-                    console.log(error.response.data)
-                    //alert("Problème de serveur, réesayer plus tard")
-                }
-                else
-                {
-                    //alert("Problème de serveur, réesayer plus tard")
-                }
-                
-            })
+        // Check if values are valid (regex is for email syntax)
+        if (this.state.email.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null || this.state.email.trim() == "" || this.state.password == "") 
+        {
+            alert("Identifiants invalides !")
+        }
+        else {
+            axios.post(`http://localhost:8020/login`, data)
+                .then(res => {
+                    console.log(res.data.message)
+                    localStorage.setItem('currentUserToken', res.data.token);
+                    history.push('/mainpage');
+                })
+                .catch(error => {
+                    if (error.reponse) {
+                        console.log(error.response.data)
+                        alert("Identifiants invalides !")
+                    }
+                    else {
+                        alert("Problème de serveur, réesayer plus tard")
+                    }
+
+                })
+        }
     }
 
 

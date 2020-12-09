@@ -1,22 +1,26 @@
 import "./App.css"
-import { Map } from "../src/Components/Map"
-import PrivateRoute from "./Components/PrivateRoute"
-import PublicRoute from "./Components/PublicRoute"
+
 //import { Header } from "../src/Components/Header/index"
 import React from "react"
+import { Button } from '@material-ui/core';
 
-
-// import { Route, Switch } from 'react-router';
+// History to navigate the React app more easily
 import { BrowserRouter,  Route, Router, Switch } from "react-router-dom"
 import history from './history'
 
 
 
-import { Button } from '@material-ui/core';
+import PrivateRoute from "./Components/PrivateRoute"
+import PublicRoute from "./Components/PublicRoute"
+
+
 import { Register } from './Components/Register/index';
 import { Login } from './Components/Login/index';
 import { mainModule } from "process"
-import { MainPage } from "./Components/MainPage"
+
+import SimpleTabs from './Components/NavMenu'
+
+
 
 
 
@@ -45,7 +49,7 @@ function App() {
         <PublicRoute exact={true}  path="/login"  component={() => <Login.Display />}   />
         <PublicRoute exact={true}  path="/register"  component={() => <Register.Display />}   />
 
-        <PrivateRoute exact={true}  path="/mainpage"  component={() => <MainPage.Display />}   />
+        <PrivateRoute exact={true}  path="/mainpage"  component={() => <SimpleTabs />}   />
         
       </Switch>
     </Router>

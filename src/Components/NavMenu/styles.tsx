@@ -1,14 +1,15 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type loginStyles = ("container" | "form" | "title" | "links" );
+export type navMenyStyles = ("container" | "form" | "title" | "links" );
 
-export default (theme: Theme) => createStyles<loginStyles, {}>({
+
+
+export default (theme: Theme) => createStyles<navMenyStyles, {}>({
     container: {
         display: 'flex',
         flex: 1,
         flexDirection: "column",
 
-        
         alignItems: 'center',
         justifyContent: 'center'
     },
