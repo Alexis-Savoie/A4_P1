@@ -1,17 +1,36 @@
+
 import { createStyles, Theme } from "@material-ui/core";
 
-export type registerStyles = "root"; // add class create
+export type registerStyles = ("container" | "form" | "title" | "links" );
 
 export default (theme: Theme) => createStyles<registerStyles, {}>({
-    root: {
-      flex: 1,
-      display: 'flex',
-      padding: '0 24px',
-      minHeight: '64px',
-      alignItems: 'center',
-      backgroundColor: '#fff',
-      justifyContent: 'space-between'
+    container: {
+        display: 'flex',
+        flex: 1,
+        flexDirection: "column",
+
+        
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    
+    form: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        paddingBottom: '10px',
+    },
+
+    title: {
+        padding: '25px',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    links: {
+        padding: '5px',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 
 });
-
