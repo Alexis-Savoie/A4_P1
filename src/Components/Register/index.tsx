@@ -40,7 +40,7 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
           <br />
           <Button variant="contained" color="secondary">Register</Button>
         </FormControl>
-        <p>hahaha</p>
+        <p>hahahssssa</p>
       </div>
     );
   }
