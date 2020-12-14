@@ -59,7 +59,7 @@ export class changePassword extends React.PureComponent<P & WithStyles<loginStyl
                     </Grid>
 
                     <Grid item className={classes.links}>
-                        <Link to="/register">Mot de passe oublié ?</Link>
+                        <Link to="/forgotpassword">Mot de passe oublié ?</Link>
                     </Grid>
 
 

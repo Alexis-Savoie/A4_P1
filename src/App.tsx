@@ -13,7 +13,7 @@ import history from './history'
 import PrivateRoute from "./Components/PrivateRoute"
 import PublicRoute from "./Components/PublicRoute"
 
-
+import{ForgotPassword} from "./Components/ForgotPassWord"
 import { Register } from './Components/Register/index';
 import { Login } from './Components/Login/index';
 import { mainModule } from "process"
@@ -48,6 +48,7 @@ function App() {
 
         <PublicRoute exact={true}  path="/login"  component={() => <Login.Display />}   />
         <PublicRoute exact={true}  path="/register"  component={() => <Register.Display />}   />
+        <PublicRoute exact={true}  path="/forgotpassword"  component={() => <ForgotPassword.Display />}   />
 
         <PrivateRoute exact={true}  path="/mainpage"  component={() => <SimpleTabs />}   />
         
