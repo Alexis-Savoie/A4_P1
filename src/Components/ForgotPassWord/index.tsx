@@ -13,7 +13,7 @@ interface P {
 }
 interface S {
   email: string,
-  password: string,
+  
 }
 
 
@@ -24,7 +24,7 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
 
   public state: Readonly<S> = {
     email: "",
-    password: "",
+    
   };
 
 
@@ -34,7 +34,7 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
       <div>
         <Grid container className={classes.container}>
           <Grid item className={classes.title}>
-            <h2>Mot de passe temporaire</h2>
+            <h2>Recevoir le mot de passe temporaire</h2>
           </Grid>
 
 
@@ -54,9 +54,6 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
 
 
 
-          <Grid item className={classes.links}>
-            <Link to="/register">Mot de passe oublié ?</Link>
-          </Grid>
 
 
         </Grid>
@@ -74,10 +71,10 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
     e.preventDefault()
     const data = {
       email: this.state.email,
-      password: this.state.password,
+     
     }
     // Check if values are valid (regex is for email syntax)
-    if (this.state.email == "" || this.state.password == "") {
+    if (this.state.email == "") {
       alert("Identifiants invalides !")
     }
     else {
