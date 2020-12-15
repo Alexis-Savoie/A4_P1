@@ -1,9 +1,9 @@
 
 import { createStyles, Theme } from "@material-ui/core";
 
-export type registerStyles = ("container" | "form" | "title" | "links" );
+export type footerStyles = ("container" | "form" | "title" | "links" | "root" | "main" | "footer" );
 
-export default (theme: Theme) => createStyles<registerStyles, {}>({
+export default (theme: Theme) => createStyles<footerStyles, {}>({
     container: {
         display: 'flex',
         flex: 1,
@@ -34,6 +34,21 @@ export default (theme: Theme) => createStyles<registerStyles, {}>({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    root: {
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+      },
+      main: {
+        marginTop: theme.spacing(8),
+        marginBottom: theme.spacing(2),
+      },
+      footer: {
+        padding: theme.spacing(3, 2),
+        marginTop: 'auto',
+        backgroundColor:
+          theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],
+      },
     
     
 

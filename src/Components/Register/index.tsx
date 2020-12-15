@@ -4,7 +4,13 @@ import { Route, Redirect } from "react-router-dom";
 import styles, { registerStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
-
+import Avatar from '@material-ui/core/Avatar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
 import history from '../../history'
@@ -27,35 +33,62 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
     password: "",
   };
 
-
   render() {
     const { classes } = this.props;
     return (
       <div>
         <Grid container className={classes.container}>
           <Grid item className={classes.title}>
-            <h2>S'inscrire</h2>
+          
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
           </Grid>
 
 
           <Grid item className={classes.form}>
             <form onSubmit={this.register}>
-              <InputLabel htmlFor="my-input">Email</InputLabel>
-              <InputEmail id="email" name="email" onChange={this.changeVal} />
-
-+
-              <InputLabel htmlFor="my-input">Mot de passe</InputLabel>
-              <InputPassword id="password" name="password" onChange={this.changeVal} type="password" />
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email" onChange={this.changeVal}
+              />
+            </Grid><br/>
+             
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password" onChange={this.changeVal} 
+              />
+            </Grid>
               <br />
 
 
-              <Button variant="contained" color="secondary" type='submit'>
+              <Button variant="contained" color="secondary" type='submit' fullWidth>
                 Register
         </Button>
+        <br/><br/>
+        <Grid container justify="flex-end"> 
+       
+            <Grid item>
+              <Link to="/login">
+                Already have an account? Sign in
+              </Link>
+            </Grid>
+          </Grid>
             </form>
           </Grid>
-
-
 
           <Grid item className={classes.links}>
             <Link to="/register">Mot de passe oublié ?</Link>

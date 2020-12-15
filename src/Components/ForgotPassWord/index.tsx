@@ -40,13 +40,22 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
 
           <Grid item className={classes.form}>
             <form onSubmit={this.register}>
-              <InputLabel htmlFor="my-input">Email</InputLabel>
-              <InputEmail id="email" name="email" onChange={this.changeVal} />
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email" onChange={this.changeVal}
+              />
+            </Grid><br/>
 
               <br />
 
 
-              <Button variant="contained" color="secondary" type='submit'>
+              <Button variant="contained" color="secondary" fullWidth type='submit'>
                 Envoyer
         </Button>
             </form>

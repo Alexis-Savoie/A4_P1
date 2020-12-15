@@ -17,7 +17,7 @@ import{ForgotPassword} from "./Components/ForgotPassWord"
 import { Register } from './Components/Register/index';
 import { Login } from './Components/Login/index';
 import { mainModule } from "process"
-
+import{Footer} from "./Components/Footer"
 import SimpleTabs from './Components/NavMenu'
 
 
@@ -50,6 +50,7 @@ function App() {
         <PublicRoute exact={true}  path="/register"  component={() => <Register.Display />}   />
         <PublicRoute exact={true}  path="/forgotpassword"  component={() => <ForgotPassword.Display />}   />
         <PrivateRoute exact={true}  path="/HistoriquePage"  component={() => <HistoriquePage.Display />}   />
+        <PublicRoute  exact={true}  path="/Footer"  component={() => <Footer.Display />}   />
 
         <PrivateRoute exact={true}  path="/mainpage"  component={() => <SimpleTabs />}   />
         
