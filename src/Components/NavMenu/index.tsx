@@ -9,7 +9,7 @@ import{ForgotPassword}from "../ForgotPassWord"
 import { changePassword } from "../changePassword"
 import{HistoriquePage}from "../Historique"
 import { MainPage } from "../MainPage"
-
+import{Register} from "../Register"
 
 
 interface TabPanelProps {
@@ -66,8 +66,9 @@ export default function SimpleTabs() {
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                     <Tab label="Carte" {...a11yProps(0)} />
                     <Tab label="Changer mot de passe" {...a11yProps(1)} />
-                    <Tab label="Mot de passe Oublier" {...a11yProps(2)} />
-                    <Tab label="Historique" {...a11yProps(3)} />
+                    
+                    <Tab label="Historique" {...a11yProps(2)} />
+                    
 
                 </Tabs>
             </AppBar>
@@ -78,12 +79,11 @@ export default function SimpleTabs() {
                 <changePassword.Display />
             </TabPanel>
 
+            
             <TabPanel value={value} index={2}>
-                <ForgotPassword.Display />
-            </TabPanel>
-            <TabPanel value={value} index={3}>
                 <HistoriquePage.Display />
             </TabPanel>
+            
 
         </div>
     );

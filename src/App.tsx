@@ -49,7 +49,7 @@ function App() {
         <PublicRoute exact={true}  path="/login"  component={() => <Login.Display />}   />
         <PublicRoute exact={true}  path="/register"  component={() => <Register.Display />}   />
         <PublicRoute exact={true}  path="/forgotpassword"  component={() => <ForgotPassword.Display />}   />
-        <PublicRoute exact={true}  path="/HistoriquePage"  component={() => <HistoriquePage.Display />}   />
+        <PrivateRoute exact={true}  path="/HistoriquePage"  component={() => <HistoriquePage.Display />}   />
 
         <PrivateRoute exact={true}  path="/mainpage"  component={() => <SimpleTabs />}   />
         
