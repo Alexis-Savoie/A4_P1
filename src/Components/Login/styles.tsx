@@ -18,6 +18,8 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
         backgroundColor: '#fff',
         justifyContent: 'center',
         paddingBottom: '10px',
+        width: '20%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
     },
 
     title: {

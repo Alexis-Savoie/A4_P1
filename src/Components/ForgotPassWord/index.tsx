@@ -58,6 +58,9 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
               <Button variant="contained" color="secondary" fullWidth type='submit'>
                 Envoyer
         </Button>
+                   <Grid item className={classes.links}>
+                        <Link to="/">Retour</Link>
+                    </Grid>
             </form>
           </Grid>
 
@@ -82,27 +85,16 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
       email: this.state.email,
      
     }
-    // Check if values are valid (regex is for email syntax)
-    if (this.state.email == "") {
-      alert("Identifiants invalides !")
-    }
-    else {
-      axios.post(`http://localhost:8020/sendTemporaryPassword`, data)
-        .then(res => {
-          console.log(res.data.message)
-          history.push('/login');
-        })
-        .catch(error => {
-          if (error.reponse) {
-            console.log(error.response.data)
-            alert("veillez emplir !")
-          }
-          else {
-            alert("Problème de serveur, réesayer plus tard")
-          }
-
-        })
-    }
+   
+   axios.post('http://localhost:8020/sendTemporaryPassword', data).then(
+     res =>{
+       console.log(res)
+     }
+   ).catch(
+     err =>{
+       console.log(err)
+     }
+   )
   }
 
 }

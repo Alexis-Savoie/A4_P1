@@ -42,13 +42,38 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
 
                     <Grid item className={classes.form}>
                         <form onSubmit={this.login}>
-                            <InputLabel htmlFor="my-input">Email</InputLabel>
-                            <InputEmail id="email" name="email" onChange={this.changeVal} />
 
-                            <InputLabel htmlFor="my-input">Mot de passe</InputLabel>
-                            <InputPassword id="password" name="password" onChange={this.changeVal} type="password" />
+
+                        <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email" onChange={this.changeVal}
+              />
+            </Grid><br/>
+             
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password" onChange={this.changeVal} 
+              />
+            </Grid>
+                        
                             <br />
-                            <LoginButton variant="contained" color="secondary" type='submit'>Connexion</LoginButton>
+                            <Button variant="contained" color="secondary" type='submit' fullWidth>
+                            Connexion
+        </Button>
+                           
                         </form>
                     </Grid>
 
