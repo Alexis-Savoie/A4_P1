@@ -62,7 +62,7 @@ export class Header extends React.PureComponent<P & WithStyles<headerStyles>, S>
           </Typography>
           <Typography variant="h5" component="h2" gutterBottom>
             {'Devenez chauffeur professionnel'}
-            {'Augmentez vos revenus tout en maîtrisant votre emploi du temps'}
+            {'Augmentez vos revenus tout en maîtrisant votre emploi du temps.'}
           </Typography>
           <Typography variant="body1">Conduisez quand vous voulez.</Typography>
         </Container>
