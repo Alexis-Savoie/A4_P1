@@ -1,7 +1,7 @@
 
 import * as React from 'react'
 import { Route, Redirect } from "react-router-dom";
-import styles, { footerStyles } from "./styles"
+import styles, { headerStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,7 +12,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import InputLabel from '@material-ui/core/InputLabel';
-
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import Container from '@material-ui/core/Container';
 
 import history from '../../history'
@@ -26,9 +27,9 @@ interface S {
 
 
 
-export class Footer extends React.PureComponent<P & WithStyles<footerStyles>, S>  {
+export class Header extends React.PureComponent<P & WithStyles<headerStyles>, S>  {
 
-  public static Display = withStyles(styles as any)(Footer) as React.ComponentType<P>
+  public static Display = withStyles(styles as any)(Header) as React.ComponentType<P>
 
   public state: Readonly<S> = {
     email: "",
@@ -40,15 +41,30 @@ export class Footer extends React.PureComponent<P & WithStyles<footerStyles>, S>
     return (
         <div className={classes.root}>
         <CssBaseline />
+        <AppBar position="static" color="default" elevation={0} className={classes.appBar}>
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
+           Uber
+          </Typography>
+          <Button href="/register" color="primary" variant="outlined" className={classes.link}>
+            Register
+          </Button>
+       
+          <Button href="/login" color="primary" variant="outlined" className={classes.link}>
+            Login
+          </Button>
+        </Toolbar>
+      </AppBar>
+
         <Container component="main" className={classes.main} maxWidth="sm">
           <Typography variant="h2" component="h1" gutterBottom>
-            Sticky footer
+            Uber App
           </Typography>
           <Typography variant="h5" component="h2" gutterBottom>
-            {'Pin a footer to the bottom of the viewport.'}
-            {'The footer will move as the main element of the page grows.'}
+            {'Devenez chauffeur professionnel'}
+            {'Augmentez vos revenus tout en maîtrisant votre emploi du temps'}
           </Typography>
-          <Typography variant="body1">Sticky footer placeholder.</Typography>
+          <Typography variant="body1">Conduisez quand vous voulez.</Typography>
         </Container>
         <footer className={classes.footer}>
           <Container maxWidth="sm">

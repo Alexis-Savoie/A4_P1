@@ -1,3 +1,14 @@
 .App {
   text-align: center;
 }
+.App-header{
+  color: red;
+}
+.Title{
+  font-size: 16px;
+}
+.Button{
+  color: red;
+  margin: spacing(1, 1.5);
+}
+

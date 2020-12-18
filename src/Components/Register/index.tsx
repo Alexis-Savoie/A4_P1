@@ -41,7 +41,7 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
           <Grid item className={classes.title}>
           
         <Typography component="h1" variant="h5">
-          Sign up
+          Inscription
         </Typography>
           </Grid>
 
@@ -83,7 +83,7 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
        
             <Grid item>
               <Link to="/login">
-                Already have an account? Sign in
+              Vous disposez d'un compte ?  Connexion
               </Link>
             </Grid>
           </Grid>

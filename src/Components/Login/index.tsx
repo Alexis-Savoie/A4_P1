@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import styles, { loginStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
-
+import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
 import history from '../../history'
@@ -36,7 +36,9 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
             <div>
                 <Grid container className={classes.container}>
                     <Grid item className={classes.title}>
-                        <h2>Se connecter</h2>
+                    <Typography component="h1" variant="h5">
+          Connexion
+        </Typography>
                     </Grid>
 
 

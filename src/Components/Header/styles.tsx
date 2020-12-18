@@ -1,9 +1,9 @@
 
 import { createStyles, Theme } from "@material-ui/core";
 
-export type footerStyles = ("container" | "form" | "title" | "links" | "root" | "main" | "footer" );
+export type headerStyles = ("container" | "form" | "title" | "links" | "root" | "main" | "footer" | "appBar" | "toolbar" | "toolbarTitle" | "link" );
 
-export default (theme: Theme) => createStyles<footerStyles, {}>({
+export default (theme: Theme) => createStyles<headerStyles, {}>({
     container: {
         display: 'flex',
         flex: 1,
@@ -28,12 +28,19 @@ export default (theme: Theme) => createStyles<footerStyles, {}>({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    toolbarTitle: {
+        flexGrow: 1,
+      },
 
     links: {
         padding: '5px',
         alignItems: 'center',
         justifyContent: 'center'
     },
+    link: {
+        margin: theme.spacing(1, 1.5),
+        
+      },
     root: {
         display: 'flex',
         flexDirection: 'column',
@@ -42,6 +49,12 @@ export default (theme: Theme) => createStyles<footerStyles, {}>({
       main: {
         marginTop: theme.spacing(8),
         marginBottom: theme.spacing(2),
+      },
+      appBar: {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      },
+      toolbar: {
+        flexWrap: 'wrap',
       },
       footer: {
         padding: theme.spacing(3, 2),
