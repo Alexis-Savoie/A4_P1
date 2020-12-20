@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
-import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, MapContext, useGoogleMap } from '@react-google-maps/api';
 
 
 
@@ -17,48 +17,147 @@ interface S {
     origin: any,
     response: any,
     waypoints: any,
-    travelMode: any
+    travelMode: any,
+    requestIsDone: boolean,
+    list: any[],
 
+    zoom: number,
+    lat: number,
+    lng: number,
+
+    devicePosition: string
 }
 
-export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S> {
+
+
+
+
+
+
+
+
+export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S> {    
     public static Display = withStyles(styles as any)(MainPage) as React.ComponentType<P>
-
-
-
-
+    
     origin: any;
     destination: any;
     response: any;
     waypoints: any;
     travelMode: any;
+    requestIsDone: any;
+
+
 
 
     constructor(props: any) {
         super(props)
-
         this.state = {
             response: null,
-            origin: 'Arpajon',
+            origin: '',
             destination: '',
             waypoints: null,
             travelMode: 'DRIVING',
+            requestIsDone: false,
+            list: [{ location: "" }],
+
+            zoom: 6,
+            lat: 48.8534,
+            lng: 2.3488,
+            devicePosition: ""
+
+
         }
 
         this.directionsCallback = this.directionsCallback.bind(this)
-        this.getOrigin = this.getOrigin.bind(this)
-        this.getDestination = this.getDestination.bind(this)
-        this.onClick = this.onClick.bind(this)
+        //this.getOrigin = this.getOrigin.bind(this)
+        //this.getDestination = this.getDestination.bind(this)
+        this.getRoute = this.getRoute.bind(this)
         this.onMapClick = this.onMapClick.bind(this)
-        console.log("START")
-        console.log(this.waypoints)
+        this.getLocalization = this.getLocalization.bind(this)
+
+        //const updated = this.state.list.slice(); 
+        //updated.push({ location: "" }); 
+        //this.setState({list:updated}); 
+
+        //this.list = [{ location: "" }]
+
     }
+
+
+
+
+
+
+
+    // handle input change
+    handleInputChangeOrigin = (e: any) => {
+        const { value } = e.target;
+        this.setState({ origin: value });
+    };
+
+
+
+
+
+    // handle input change for waypoints
+    handleInputChange = (e: any, index: number) => {
+        const { value } = e.target;
+        const list = this.state.list.slice();
+        list[index] = value;
+        this.setState({ list: list });
+    };
+
+    // handle click event of the Remove button
+    handleRemoveClick = (index: any) => {
+        const list = this.state.list.slice();
+        list.splice(index, 1);
+        this.setState({ list: list })
+    };
+
+    // handle click event of the Add button
+    handleAddClick = () => {
+        const list = this.state.list.slice();
+        if (list.length >= 24)
+            alert("Il y'a trop de destinations ! (Max 24)")
+        else {
+            const updated = list.slice();
+            updated.push({ location: "" });
+            this.setState({ list: updated });
+            //console.log(this.list)
+        }
+
+    };
+
+
+    // Get inputs datas
+    getInputsData = () => {
+        const list = this.state.list.slice();
+        let waypointsURL = ""
+        for (let i = 0; i < list.length; i++) {
+            waypointsURL += list[i] + "/"
+
+        }
+        console.log(waypointsURL)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     directionsCallback(response: any) {
         console.log("salut 5!")
-        console.log(this.state.waypoints)
-        console.log(this.destination)
-        console.log(response)
+        //console.log(this.state.waypoints)
+        //console.log(this.destination)
+        //console.log(response)
 
         if (response !== null) {
             if (response.status === 'OK') {
@@ -71,138 +170,139 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                 console.log('response: ', response)
             }
         }
+
+        // Set to true to avoid infinite requests before Google block
+        this.requestIsDone = true
     }
 
 
-
-    getOrigin(ref: any) {
-        this.origin = ref
-    }
-
-    getDestination(ref: any) {
-        this.destination = ref
-    }
-
-    onClick() {
+    /*
+        getOrigin(ref: any) {
+            this.origin = ref
+        }
+    
+        getDestination(ref: any) {
+            this.destination = ref
+        }
+    */
+    getRoute() {
         console.log("salut !3")
 
-        axios.get(`http://localhost:8020/getRoute/eyJhbGciOiJIUzI1NiJ9.YWxleGlzLnNhdm9pZUBmcmVlLmZy.sfLMpIpvYbL5Uzb8VVblN2jYRMqFEETLcivyKg2n6KY/Arpajon 91290/Dourdan,91200|Etampes, 91223`)
+        const list = this.state.list.slice();
+        console.log("new code : ")
+        console.log(list)
+        let waypointsURL = ""
+        for (let i = 0; i < list.length; i++) {
+            waypointsURL += list[i] + "|"
+        }
+        waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
+        console.log(waypointsURL)
+
+        axios.get(`http://localhost:8020/getRoute/eyJhbGciOiJIUzI1NiJ9.YWxleGlzLnNhdm9pZUBmcmVlLmZy.sfLMpIpvYbL5Uzb8VVblN2jYRMqFEETLcivyKg2n6KY/` + this.state.origin + `/` + waypointsURL)
             .then(res => {
                 //console.log(res.data.route)
                 //console.log(res.data.route.status)
-                let response = res.data.route
-                console.log("Objet en JSON : ")
-                console.log(JSON.stringify(response))
-
-                console.log("Type de l'objet: ")
-                console.log(typeof(response))
-                if (response.status === 'OK') {
-                    this.setState(
-                        () => ({
-                            response
-                        })
-                    )
-                } else {
-                    console.log('response: ', response)
-                }
+                console.log("res.data.origin")
+                this.responseCallback(res.data)
 
 
             })
             .catch(error => {
                 if (error.reponse) {
                     console.log(error.response.data)
-                    //alert("Problème de serveur, réesayer plus tard")
+                    alert("Problème d'input'")
                 }
                 else {
-                    //alert("Problème de serveur, réesayer plus tard")
+                    if (error.response.status == 403)
+                        alert("Adresse invalide")
+                    else
+                        alert("Problème serveur réesayer plus tard")
                 }
             })
+        this.requestIsDone = false
         console.log("yo")
 
 
     }
 
-    responseCallback(waypts: any) {
-        let arr = waypts.split("|");
+    responseCallback(res: any) {
         let wp = []
-
-        for (let i = 0; i < arr.length - 1; i++) {
+        console.log("salut 4!1")
+        console.log(res.waypoints.length)
+        for (let i = 0; i < res.waypoints.length; i++) {
             wp.push({
-                location: arr[i],
+                location: res.waypoints[i],
                 stopover: true,
             })
         }
-
-        let destination = waypts.split("|")[arr.length - 1]
-
+        let origin = res.origin
+        let destination = res.destination
         let waypoints = wp
-
-        console.log()
 
         this.setState(
             () => ({
                 destination
             })
         )
-        
         this.setState(
             () => ({
                 waypoints
             })
         )
-
-        
-
-        console.log("salut 4!")
-        console.log(waypts)
-        console.log(waypts.split("|")[arr.length - 1])
+        this.setState(
+            () => ({
+                origin
+            })
+        )
+        console.log("salut 4!2")
         console.log(this.state.waypoints)
 
     }
 
 
 
+    onResizeFunc(...args: any) {
+        console.log("resized :")
+        console.log(args)
+    }
 
+
+
+    onCenterChangedFunc(...args: any) {
+        console.log("center changed :")
+    }
 
 
     onMapClick(...args: any) {
-        console.log('onClick args: ', args)
-        console.log("salut !2")
-
-
     }
+
+    getLocalization() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const devicePosition = position.coords.latitude + "," + position.coords.longitude
+                console.log("devicePos : " + devicePosition)
+                //console.log("origin : " + this.origin)
+                //this.origin = devicePosition
+                const origin = devicePosition
+                this.setState(
+                    () => ({
+                        origin
+                    })
+                )
+            });
+        } else {
+            alert("Geoloaction is not supported by your browser");
+        }
+    }
+
+
+
 
     render() {
 
-
-
         return (
+            
             <div className='map'>
-                <div className='map-settings'>
-                    <hr className='mt-0 mb-3' />
-
-                    <div className='row'>
-                        <div className='col-md-6 col-lg-4'>
-                            <div className='form-group'>
-                                <label htmlFor='ORIGIN'>Origin</label>
-                                <br />
-                                <input id='ORIGIN' className='form-control' type='text' ref={this.getOrigin} />
-                            </div>
-                        </div>
-
-                        <div className='col-md-6 col-lg-4'>
-                            <div className='form-group'>
-                                <label htmlFor='DESTINATION'>Destination</label>
-                                <br />
-                                <input id='DESTINATION' className='form-control' type='text' ref={this.getDestination} />
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <button className='btn btn-primary' type='button' onClick={this.onClick}>Build Route</button>
-                </div>
-
                 <div className='map-container'>
                     <GoogleMap
                         // required
@@ -213,25 +313,52 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                             width: '100%'
                         }}
                         // required
-                        zoom={2}
+                        zoom={this.state.zoom}
                         // required
                         center={{
-                            lat: 0,
-                            lng: -180
+                            lat: this.state.lat,
+                            lng: this.state.lng
                         }}
                         // optional
                         onClick={this.onMapClick}
-                        // optional
+                        onResize={this.onResizeFunc}
+                        onCenterChanged={this.onCenterChangedFunc}
+
                         onLoad={(map: any) => {
-                            console.log('DirectionsRenderer onLoad map: ', map)
+                            console.log('DirectionsRenderer onLoad map: ')
+                            console.log(map)
                         }}
                         // optional
                         onUnmount={(map: any) => {
                             console.log('DirectionsRenderer onUnmount map: ', map)
                         }}
                     >
-
-
+                        {
+                            (
+                                this.state.waypoints != null && this.requestIsDone == false
+                            ) && (
+                                <DirectionsService
+                                    // required
+                                    options={{
+                                        destination: this.state.destination,
+                                        origin: this.state.origin,
+                                        travelMode: this.state.travelMode,
+                                        waypoints: this.state.waypoints,
+                                        optimizeWaypoints: true
+                                    }}
+                                    // required
+                                    callback={this.directionsCallback}
+                                    // optional
+                                    onLoad={(directionsService: any) => {
+                                        console.log('DirectionsService onLoad directionsService: ', directionsService)
+                                    }}
+                                    // optional
+                                    onUnmount={(directionsService: any) => {
+                                        console.log('DirectionsService onUnmount directionsService: ', directionsService)
+                                    }}
+                                />
+                            )
+                        }
 
                         {
                             this.state.response !== null && (
@@ -253,10 +380,39 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                         }
                     </GoogleMap>
                 </div>
+                <label>Départ</label>
+                <br></br>
+                <input
+                    name="origin"
+                    placeholder="Départ"
+                    value={this.state.origin}
+                    onChange={e => this.handleInputChangeOrigin(e)}
+                />
+                <button onClick={this.getLocalization}>getDeviceLocation</button>
+                <br></br>
+                <label>Waypoints (Max 24)</label>
+                {this.state.list.map((x: any, i: any) => {
+                    return (
+                        <div>
+                            <div className="box">
+                                <input
+                                    name="location"
+                                    placeholder="Location"
+                                    value={x.location}
+                                    onChange={e => this.handleInputChange(e, i)}
+                                />
+                                {this.state.list.length > 1 && <button
+                                    className="mr10"
+                                    onClick={() => this.handleRemoveClick(i)}>X</button>}
+                                {this.state.list.length - 1 === i && <button onClick={this.handleAddClick}>+</button>}
+
+                            </div>
+                        </div>
+                    );
+                })}
+                <button onClick={this.getRoute}>getRoute</button>
             </div>
         )
     }
-
-
 }
 
