@@ -59,8 +59,6 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
                     <Grid item className={classes.links}>
                         <Link to="/register">Mot de passe oublié ?</Link>
                     </Grid>
-
-
                 </Grid>
             </div>
 

@@ -198,7 +198,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
         console.log(waypointsURL)
 
-        axios.get(`http://localhost:8020/getRoute/eyJhbGciOiJIUzI1NiJ9.YWxleGlzLnNhdm9pZUBmcmVlLmZy.sfLMpIpvYbL5Uzb8VVblN2jYRMqFEETLcivyKg2n6KY/` + this.state.origin + `/` + waypointsURL)
+        axios.get(`http://localhost:8020/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
             .then(res => {
                 //console.log(res.data.route)
                 //console.log(res.data.route.status)

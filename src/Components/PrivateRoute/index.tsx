@@ -15,7 +15,7 @@ const PrivateRoute: React.FC<{
 
     let condition = false
     try {
-        var decoded = jwt.verify(token, 'default');
+        var decoded = jwt.verify(token, process.env.REACT_APP_JWTSECRET);
         console.log("decoded : " + token)
         console.log(decoded)
         condition = true
