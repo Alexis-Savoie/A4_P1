@@ -92,7 +92,7 @@ export class changePassword extends React.PureComponent<P & WithStyles<loginStyl
                 alert("Les mots de passe ne sont pas identique !")
             }
             else {
-                axios.put(`http://localhost:8020/changePassword`, data)
+                axios.put(process.env.REACT_APP_API_URL + `/changePassword`, data)
                     .then(res => {
                         console.log(res.data.message)
                         localStorage.getItem('currentUserToken');
