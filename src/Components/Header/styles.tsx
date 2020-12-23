@@ -58,6 +58,7 @@ export default (theme: Theme) => createStyles<headerStyles, {}>({
       },
       footer: {
         padding: theme.spacing(3, 2),
+        align: 'center',
         marginTop: 'auto',
         backgroundColor:
           theme.palette.type === 'light' ? theme.palette.grey[200] : theme.palette.grey[800],

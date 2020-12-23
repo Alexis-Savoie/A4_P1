@@ -46,11 +46,11 @@ export class Header extends React.PureComponent<P & WithStyles<headerStyles>, S>
           <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
            Uber
           </Typography>
-          <Button href="/register" color="primary" variant="outlined" className={classes.link}>
+          <Button href="/register" color="secondary" variant="outlined" className={classes.link}>
             Register
           </Button>
        
-          <Button href="/login" color="primary" variant="outlined" className={classes.link}>
+          <Button href="/login" color="secondary"  variant="outlined" className={classes.link}>
             Login
           </Button>
         </Toolbar>
@@ -61,14 +61,15 @@ export class Header extends React.PureComponent<P & WithStyles<headerStyles>, S>
             Uber App
           </Typography>
           <Typography variant="h5" component="h2" gutterBottom>
-            {'Devenez chauffeur professionnel'}
-            {'Augmentez vos revenus tout en maîtrisant votre emploi du temps.'}
+            {'Devenez chauffeur professionnel.'}
+
+            {'Augmentez vos revenus tout en maîtrisant votre emploi du temps'}
           </Typography>
           <Typography variant="body1">Conduisez quand vous voulez.</Typography>
         </Container>
         <footer className={classes.footer}>
           <Container maxWidth="sm">
-            <Typography variant="body1">My sticky footer can be found here.</Typography>
+            <Typography variant="body1">Footer .</Typography>
             
           </Container>
         </footer>
