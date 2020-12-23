@@ -120,9 +120,11 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         const list = this.state.list.slice();
         let waypointsURL = ""
         for (let i = 0; i < list.length; i++) {
-            waypointsURL += list[i] + "/"
+            if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
+                waypointsURL += list[i] + "|"
 
         }
+        console.log("waypointsURL2 : ")
         console.log(waypointsURL)
     }
 
@@ -150,9 +152,13 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         const list = this.state.list.slice();
         let waypointsURL = ""
         for (let i = 0; i < list.length; i++) {
-            waypointsURL += list[i] + "|"
+            if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
+                waypointsURL += list[i] + "|"
+                console.log(list[i])
         }
+        // Remove last |
         waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
+        console.log("waypointsURL1 : ")
         console.log(waypointsURL)
 
         axios.get(process.env.REACT_APP_API_URL + `/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
@@ -161,7 +167,6 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                 //console.log(res.data.route.status)
                 console.log("res.data.origin")
                 this.responseCallback(res.data)
-
 
             })
             .catch(error => {
