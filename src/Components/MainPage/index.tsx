@@ -1,13 +1,10 @@
 import * as React from 'react'
 import styles, { loginStyles } from "./styles"
-import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
-import { Link } from 'react-router-dom';
+import {  withStyles, WithStyles } from "@material-ui/core"
 
-import InputLabel from '@material-ui/core/InputLabel';
+
 import axios from 'axios';
-import { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, MapContext, useGoogleMap } from '@react-google-maps/api';
-
-
+import { GoogleMap, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
 
 interface P {
@@ -25,14 +22,10 @@ interface S {
     lat: number,
     lng: number,
 
+    distance: string,
+
     devicePosition: string
 }
-
-
-
-
-
-
 
 
 
@@ -63,6 +56,9 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
             zoom: 6,
             lat: 48.8534,
             lng: 2.3488,
+
+            distance: "",
+
             devicePosition: ""
 
 
@@ -74,13 +70,6 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         this.getRoute = this.getRoute.bind(this)
         this.onMapClick = this.onMapClick.bind(this)
         this.getLocalization = this.getLocalization.bind(this)
-
-        //const updated = this.state.list.slice(); 
-        //updated.push({ location: "" }); 
-        //this.setState({list:updated}); 
-
-        //this.list = [{ location: "" }]
-
     }
 
 
@@ -94,9 +83,6 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         const { value } = e.target;
         this.setState({ origin: value });
     };
-
-
-
 
 
     // handle input change for waypoints
@@ -142,23 +128,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     directionsCallback(response: any) {
-        console.log("salut 5!")
-        //console.log(this.state.waypoints)
-        //console.log(this.destination)
-        //console.log(response)
-
         if (response !== null) {
             if (response.status === 'OK') {
                 this.setState(
@@ -176,21 +146,8 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
     }
 
 
-    /*
-        getOrigin(ref: any) {
-            this.origin = ref
-        }
-    
-        getDestination(ref: any) {
-            this.destination = ref
-        }
-    */
     getRoute() {
-        console.log("salut !3")
-
         const list = this.state.list.slice();
-        console.log("new code : ")
-        console.log(list)
         let waypointsURL = ""
         for (let i = 0; i < list.length; i++) {
             waypointsURL += list[i] + "|"
@@ -213,22 +170,17 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                     alert("Problème d'input'")
                 }
                 else {
-                    if (error.response.status == 403)
+                    if (error.response.status === 403)
                         alert("Adresse invalide")
                     else
                         alert("Problème serveur réesayer plus tard")
                 }
             })
         this.requestIsDone = false
-        console.log("yo")
-
-
     }
 
     responseCallback(res: any) {
         let wp = []
-        console.log("salut 4!1")
-        console.log(res.waypoints.length)
         for (let i = 0; i < res.waypoints.length; i++) {
             wp.push({
                 location: res.waypoints[i],
@@ -238,6 +190,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         let origin = res.origin
         let destination = res.destination
         let waypoints = wp
+        let distance = "Distance : " + res.distance + "km"
 
         this.setState(
             () => ({
@@ -254,8 +207,11 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                 origin
             })
         )
-        console.log("salut 4!2")
-        console.log(this.state.waypoints)
+        this.setState(
+            () => ({
+                distance
+            })
+        )
 
     }
 
@@ -335,7 +291,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                     >
                         {
                             (
-                                this.state.waypoints != null && this.requestIsDone == false
+                                this.state.waypoints !== null && this.requestIsDone === false
                             ) && (
                                 <DirectionsService
                                     // required
@@ -411,6 +367,8 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                     );
                 })}
                 <button onClick={this.getRoute}>getRoute</button>
+                <br></br>
+                <p>{this.state.distance}</p>
             </div>
         )
     }
