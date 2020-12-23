@@ -68,7 +68,6 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         //this.getOrigin = this.getOrigin.bind(this)
         //this.getDestination = this.getDestination.bind(this)
         this.getRoute = this.getRoute.bind(this)
-        this.onMapClick = this.onMapClick.bind(this)
         this.getLocalization = this.getLocalization.bind(this)
     }
 
@@ -124,8 +123,8 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                 waypointsURL += list[i] + "|"
 
         }
-        console.log("waypointsURL2 : ")
-        console.log(waypointsURL)
+        //console.log("waypointsURL2 : ")
+        //console.log(waypointsURL)
     }
 
 
@@ -139,7 +138,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                     })
                 )
             } else {
-                console.log('response: ', response)
+                //console.log('response: ', response)
             }
         }
 
@@ -158,20 +157,20 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         }
         // Remove last |
         waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
-        console.log("waypointsURL1 : ")
-        console.log(waypointsURL)
+        //console.log("waypointsURL1 : ")
+        //console.log(waypointsURL)
 
         axios.get(process.env.REACT_APP_API_URL + `/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
             .then(res => {
                 //console.log(res.data.route)
                 //console.log(res.data.route.status)
-                console.log("res.data.origin")
+                //console.log("res.data.origin")
                 this.responseCallback(res.data)
 
             })
             .catch(error => {
                 if (error.reponse) {
-                    console.log(error.response.data)
+                    //console.log(error.response.data)
                     alert("Problème d'input'")
                 }
                 else {
@@ -222,26 +221,11 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
 
 
-    onResizeFunc(...args: any) {
-        console.log("resized :")
-        console.log(args)
-    }
-
-
-
-    onCenterChangedFunc(...args: any) {
-        console.log("center changed :")
-    }
-
-
-    onMapClick(...args: any) {
-    }
-
     getLocalization() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position) => {
                 const devicePosition = position.coords.latitude + "," + position.coords.longitude
-                console.log("devicePos : " + devicePosition)
+                //console.log("devicePos : " + devicePosition)
                 //console.log("origin : " + this.origin)
                 //this.origin = devicePosition
                 const origin = devicePosition
@@ -280,10 +264,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                             lat: this.state.lat,
                             lng: this.state.lng
                         }}
-                        // optional
-                        onClick={this.onMapClick}
-                        onResize={this.onResizeFunc}
-                        onCenterChanged={this.onCenterChangedFunc}
+
 
                         onLoad={(map: any) => {
                             console.log('DirectionsRenderer onLoad map: ')
