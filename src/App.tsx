@@ -5,7 +5,8 @@ import React from "react"
 import { Button } from '@material-ui/core';
 
 // History to navigate the React app more easily
-import { BrowserRouter,  Route, Router, Switch } from "react-router-dom"
+import { Redirect, BrowserRouter,  Route, Router, Switch } from "react-router-dom"
+
 import history from './history'
 
 
@@ -31,25 +32,14 @@ function App() {
     <Router history={history}>
       <Switch>
 
-        <Route exact={true} path={'/'} render={() => (
-          <header className="App-header">
-            <p>
-              Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-            <a
-              className="App-link"
-              href="/login"
-              rel="nofowo"
-            >
-              Learn React
-          </a>
-          </header>
-        )} />
-
+        <PublicRoute exact={true}  path="/"  component={() => <Redirect to="/login" />} />
+        
         <PublicRoute exact={true}  path="/login"  component={() => <Login.Display />}   />
         <PublicRoute exact={true}  path="/register"  component={() => <Register.Display />}   />
 
         <PrivateRoute exact={true}  path="/mainpage"  component={() => <SimpleTabs />}   />
+
+        <PublicRoute exact={true}  path="*"  component={() => <Redirect to="/login" />} />
         
       </Switch>
     </Router>

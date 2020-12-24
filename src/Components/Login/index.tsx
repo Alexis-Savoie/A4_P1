@@ -59,8 +59,6 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
                     <Grid item className={classes.links}>
                         <Link to="/register">Mot de passe oublié ?</Link>
                     </Grid>
-
-
                 </Grid>
             </div>
 
@@ -85,7 +83,7 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
             alert("Identifiants invalides !")
         }
         else {
-            axios.post(`http://localhost:8020/login`, data)
+            axios.post(process.env.REACT_APP_API_URL + `/login`, data)
                 .then(res => {
                     console.log(res.data.message)
                     localStorage.setItem('currentUserToken', res.data.token);

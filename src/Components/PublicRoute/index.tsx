@@ -12,7 +12,7 @@ const PublicRoute: React.FC<{
 
     let condition = false
     try {
-        var decoded = jwt.verify(token, 'default');
+        var decoded = jwt.verify(token, process.env.REACT_APP_JWTSECRET);
         console.log("decoded : ")
         console.log(decoded)
         condition = false
