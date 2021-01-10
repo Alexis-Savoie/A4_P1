@@ -1,7 +1,0 @@
-{
-    "Constants": {
-        "isProd": false,
-        "URL_API": "http://localhost:8020"
-
-    }
-}

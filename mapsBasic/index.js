@@ -104,6 +104,8 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
                 },
                 (response, status) => {
                     if (status === "OK") {
+						console.log("response : ")
+						console.log(response)
                         resRoutes.push(response)
 
                         i = 0

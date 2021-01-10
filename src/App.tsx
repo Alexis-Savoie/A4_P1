@@ -5,7 +5,8 @@ import React from "react"
 
 
 // History to navigate the React app more easily
-import { BrowserRouter,  Route, Router, Switch } from "react-router-dom"
+import { Redirect, BrowserRouter,  Route, Router, Switch } from "react-router-dom"
+
 import history from './history'
 
 import PrivateRoute from "./Components/PrivateRoute"
@@ -31,11 +32,9 @@ function App() {
      
    <Router history={history}>
       <Switch>
-         
-        {/* <Route exact={true} path={'/'} render={() => (
-          
-        )} /> */}
-       <PublicRoute  exact={true}  path="/"  component={() => <Header.Display />}   />
+
+        <PublicRoute exact={true}  path="/"  component={() => <Redirect to="/login" />} />
+        
         <PublicRoute exact={true}  path="/login"  component={() => <Login.Display />}   />
         <PublicRoute exact={true}  path="/register"  component={() => <Register.Display />}   />
         <PublicRoute exact={true}  path="/forgotpassword"  component={() => <ForgotPassword.Display />}   />
@@ -43,6 +42,8 @@ function App() {
         
 
         <PrivateRoute exact={true}  path="/mainpage"  component={() => <SimpleTabs />}   />
+
+        <PublicRoute exact={true}  path="*"  component={() => <Redirect to="/login" />} />
         
       </Switch>
     </Router>
