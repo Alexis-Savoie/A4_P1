@@ -2,7 +2,7 @@ import * as React from 'react'
 import styles, { loginStyles } from "./styles"
 import { withStyles, WithStyles, Button } from "@material-ui/core"
 import Typography from '@material-ui/core/Typography';
-
+import { Card, CardContent } from "@material-ui/core"
 import axios from 'axios';
 import { GoogleMap, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
@@ -276,16 +276,27 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
     render() {
         const { classes } = this.props;
+        const style = {
+           display: 'flex',
+           margin: '-555px 80px 15px -12px',
+           with:'30px'
+           
+            
+          };
+      
+        
         return (
-            <div className='map'>
+            <div className="map">
                 <div className={classes.mapContainer}>
                     <GoogleMap
                         // required
                         id='direction-example'
                         // required
                         mapContainerStyle={{
-                            height: '400px',
-                            width: '100%'
+                            height: '500px',
+                            margin: '45px 80px 15px 342px',
+                            padding: '1rem',
+                            
                         }}
                         // required
                         zoom={this.state.zoom}
@@ -352,18 +363,26 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                         }
                     </GoogleMap>
                 </div>
-                <Typography component="h5" variant="h5">Départ</Typography>
 
-                <input
-                    name="origin"
-                    placeholder="Départ"
-                    value={this.state.origin}
-                    onChange={e => this.handleInputChangeOrigin(e)}
-                />
-                <button onClick={this.getLocalization}>Utiliser Position Actuel</button>
-                <br></br>
-                <Typography component="h5" variant="h5">Points intermédiaire (Max 24)</Typography>
-                {this.state.list.map((x: any, i: any) => {
+                
+             <div style={style}>
+             <Card  >
+                   <CardContent>
+                   <Typography component="h5" variant="h5">Départ</Typography>
+
+         <input
+          name="origin"
+          placeholder="Départ"
+          value={this.state.origin}
+           onChange={e => this.handleInputChangeOrigin(e)}
+           />
+             <button onClick={this.getLocalization}>Utiliser Position Actuel</button>
+               <br></br>
+               <Typography component="h5" variant="h5">Points intermédiaire (Max 24)</Typography>
+ 
+                   </CardContent>
+
+                   {this.state.list.map((x: any, i: any) => {
                     return (
                         <div>
                             <div className="box">
@@ -387,6 +406,12 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                 <br></br>
                 <br></br>
                 <Typography component="h5" variant="h5">{this.state.distance}</Typography>
+               </Card>
+             
+             </div>
+
+
+             
             </div>
         )
     }

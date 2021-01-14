@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px;
 }
 .App-header{
   color: red;
@@ -10,5 +13,13 @@
 .Button{
   color: red;
   margin: spacing(1, 1.5);
+}
+
+* {
+  margin: 0
+}
+
+body {
+  background-color: #f5f6fa;
 }
 
