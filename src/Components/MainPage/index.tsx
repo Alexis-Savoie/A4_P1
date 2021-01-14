@@ -121,7 +121,6 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
         for (let i = 0; i < list.length; i++) {
             if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
                 waypointsURL += list[i] + "|"
-
         }
         //console.log("waypointsURL2 : ")
         //console.log(waypointsURL)
@@ -243,6 +242,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
 
 
+
     render() {
 
         return (
@@ -330,7 +330,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                     value={this.state.origin}
                     onChange={e => this.handleInputChangeOrigin(e)}
                 />
-                <button onClick={this.getLocalization}>getDeviceLocation</button>
+                <button onClick={this.getLocalization}>Position Actuel</button>
                 <br></br>
                 <label>Waypoints (Max 24)</label>
                 {this.state.list.map((x: any, i: any) => {
@@ -352,7 +352,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                         </div>
                     );
                 })}
-                <button onClick={this.getRoute}>getRoute</button>
+                <button onClick={this.getRoute}>Calculer Itinéraire</button>
                 <br></br>
                 <p>{this.state.distance}</p>
             </div>

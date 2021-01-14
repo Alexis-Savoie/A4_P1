@@ -13,7 +13,7 @@ interface P {
 }
 interface S {
   email: string,
-  
+
 }
 
 
@@ -24,7 +24,7 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
 
   public state: Readonly<S> = {
     email: "",
-    
+
   };
 
 
@@ -40,17 +40,17 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
 
           <Grid item className={classes.form}>
             <form onSubmit={this.register}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email" onChange={this.changeVal}
-              />
-            </Grid><br/>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email" onChange={this.changeVal}
+                />
+              </Grid><br />
 
               <br />
 
@@ -58,9 +58,9 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
               <Button variant="contained" color="secondary" fullWidth type='submit'>
                 Envoyer
         </Button>
-                   <Grid item className={classes.links}>
-                        <Link to="/">Retour</Link>
-                    </Grid>
+              <Grid item className={classes.links}>
+                <Link to="/">Retour</Link>
+              </Grid>
             </form>
           </Grid>
 
@@ -83,18 +83,19 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
     e.preventDefault()
     const data = {
       email: this.state.email,
-     
+
     }
-   
-   axios.post('http://localhost:8020/sendTemporaryPassword', data).then(
-     res =>{
-       console.log(res)
-     }
-   ).catch(
-     err =>{
-       console.log(err)
-     }
-   )
+
+    axios.post('http://localhost:8020/sendTemporaryPassword', data).then(
+      res => {
+        console.log(res)
+        alert("Un mot de passe temporaire à été envoyé sur votre boite mail")
+      }
+    ).catch(
+      err => {
+        alert("Erreur serveur, réessayer plus tard !")
+      }
+    )
   }
 
 }
@@ -102,15 +103,15 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
 const InputEmail = withStyles({
   root: {
 
-      marginBottom: '2rem',
-      color: 'white'
+    marginBottom: '2rem',
+    color: 'white'
   },
 })(TextField);
 
 const InputPassword = withStyles({
   root: {
 
-      marginBottom: '2rem',
-      color: 'white'
+    marginBottom: '2rem',
+    color: 'white'
   },
 })(TextField);

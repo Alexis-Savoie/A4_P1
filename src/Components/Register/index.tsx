@@ -39,54 +39,52 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
       <div>
         <Grid container className={classes.container}>
           <Grid item className={classes.title}>
-          
-        <Typography component="h1" variant="h5">
-          Inscription
+
+            <Typography component="h1" variant="h5">
+              Inscription
         </Typography>
           </Grid>
 
 
           <Grid item className={classes.form}>
             <form onSubmit={this.register}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email" onChange={this.changeVal}
-              />
-            </Grid><br/>
-             
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password" onChange={this.changeVal} 
-              />
-            </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="email"
+                  label="Email"
+                  name="email"
+                  autoComplete="email" onChange={this.changeVal}
+                />
+              </Grid><br />
+
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  name="password"
+                  label="Mot de passe"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password" onChange={this.changeVal}
+                />
+              </Grid>
               <br />
 
 
               <Button variant="contained" color="secondary" type='submit' fullWidth>
-                Register
-        </Button>
-        <br/><br/>
-        <Grid container justify="flex-end"> 
-       
-            <Grid item>
-              <Link to="/login">
-              Vous disposez d'un compte ?  Connexion
+                S'inscrire
+              </Button>
+              <br /><br />
+              <Grid container justify="flex-end">
+
+                <Grid item>
+                  <Link to="/login">
+                    Vous disposez d'un compte ?  Connexion
               </Link>
-            </Grid>
-          </Grid>
+                </Grid>
+              </Grid>
             </form>
           </Grid>
 
@@ -116,6 +114,9 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
     if (this.state.email == "" || this.state.password == "") {
       alert("Identifiants invalides !")
     }
+    else if (this.state.email.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null || this.state.email.trim() == "" || this.state.password == "") {
+      alert("Identifiants invalides !")
+    }
     else {
       axios.post(`http://localhost:8020/register`, data)
         .then(res => {
@@ -125,7 +126,7 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
         .catch(error => {
           if (error.reponse) {
             console.log(error.response.data)
-            alert("veillez emplir !")
+            alert("Identifiants invalides !")
           }
           else {
             alert("Problème de serveur, réesayer plus tard")
@@ -136,19 +137,3 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
   }
 
 }
-
-const InputEmail = withStyles({
-  root: {
-
-      marginBottom: '2rem',
-      color: 'white'
-  },
-})(TextField);
-
-const InputPassword = withStyles({
-  root: {
-
-      marginBottom: '2rem',
-      color: 'white'
-  },
-})(TextField);
