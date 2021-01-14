@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styles, { loginStyles } from "./styles"
-import {  withStyles, WithStyles } from "@material-ui/core"
-
+import { withStyles, WithStyles, Button } from "@material-ui/core"
+import Typography from '@material-ui/core/Typography';
 
 import axios from 'axios';
 import { GoogleMap, DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
@@ -29,9 +29,9 @@ interface S {
 
 
 
-export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S> {    
+export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S> {
     public static Display = withStyles(styles as any)(MainPage) as React.ComponentType<P>
-    
+
     origin: any;
     destination: any;
     response: any;
@@ -148,38 +148,69 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
     getRoute() {
         const list = this.state.list.slice();
+        // For checking if there no empty field
+        let validLocation = true
         let waypointsURL = ""
         for (let i = 0; i < list.length; i++) {
-            if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
-                waypointsURL += list[i] + "|"
-                console.log(list[i])
+            if (list[i] != "") {
+                if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
+                    waypointsURL += list[i] + "|"
+            }
+            else
+                validLocation = false
         }
-        // Remove last |
-        waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
-        //console.log("waypointsURL1 : ")
-        //console.log(waypointsURL)
 
-        axios.get(process.env.REACT_APP_API_URL + `/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
-            .then(res => {
-                //console.log(res.data.route)
-                //console.log(res.data.route.status)
-                //console.log("res.data.origin")
-                this.responseCallback(res.data)
+        if (this.state.origin == "")
+            validLocation = false
 
-            })
-            .catch(error => {
-                if (error.reponse) {
-                    //console.log(error.response.data)
-                    alert("Problème d'input'")
-                }
-                else {
-                    if (error.response.status === 403)
-                        alert("Adresse invalide")
-                    else
-                        alert("Problème serveur réesayer plus tard")
-                }
-            })
-        this.requestIsDone = false
+        if (validLocation) {
+            // Remove last |
+            waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
+
+
+            axios.get(process.env.REACT_APP_API_URL + `/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
+                .then(res => {
+                    // If the itinerary was succesfully calculated then we add it to history
+                    let data = {
+                        token: localStorage.getItem('currentUserToken'),
+                        origin: this.state.origin,
+                        waypoints: waypointsURL
+                    }
+                    axios.post(process.env.REACT_APP_API_URL + `/addToHistory`, data)
+                        .then(res2 => {
+                            // Once we have the itinerary we can use the callback
+                            this.responseCallback(res.data)
+                        })
+                        .catch(error => {
+                            if (error.response) {
+                                if (error.response.status == 403)
+                                    alert("Location invalide !")
+                                else
+                                    alert("Erreur !, veuilleez réesayer plus tard !")
+                            }
+                            else {
+                                alert("Problème serveur réesayer plus tard")
+                            }
+                        })
+                })
+                .catch(error => {
+                    if (error.reponse) {
+                        //console.log(error.response.data)
+                        alert("Problème d'input'")
+                    }
+                    else {
+                        if (error.response.status === 403)
+                            alert("Adresse invalide")
+                        else
+                            alert("Problème serveur réesayer plus tard")
+                    }
+                })
+            this.requestIsDone = false
+        }
+        else
+            alert("une ou plusieurs locations sont invalide !")
+
+
     }
 
     responseCallback(res: any) {
@@ -244,11 +275,10 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
 
     render() {
-
+        const { classes } = this.props;
         return (
-            
             <div className='map'>
-                <div className='map-container'>
+                <div className={classes.mapContainer}>
                     <GoogleMap
                         // required
                         id='direction-example'
@@ -322,17 +352,17 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                         }
                     </GoogleMap>
                 </div>
-                <label>Départ</label>
-                <br></br>
+                <Typography component="h5" variant="h5">Départ</Typography>
+
                 <input
                     name="origin"
                     placeholder="Départ"
                     value={this.state.origin}
                     onChange={e => this.handleInputChangeOrigin(e)}
                 />
-                <button onClick={this.getLocalization}>Position Actuel</button>
+                <button onClick={this.getLocalization}>Utiliser Position Actuel</button>
                 <br></br>
-                <label>Waypoints (Max 24)</label>
+                <Typography component="h5" variant="h5">Points intermédiaire (Max 24)</Typography>
                 {this.state.list.map((x: any, i: any) => {
                     return (
                         <div>
@@ -352,11 +382,16 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                         </div>
                     );
                 })}
-                <button onClick={this.getRoute}>Calculer Itinéraire</button>
                 <br></br>
-                <p>{this.state.distance}</p>
+                <Button onClick={this.getRoute} variant="contained" color="secondary" type='submit' >Calculer Itinéraire</Button>
+                <br></br>
+                <br></br>
+                <Typography component="h5" variant="h5">{this.state.distance}</Typography>
             </div>
         )
     }
 }
+/*
+<button onClick={this.getRoute}>Calculer Itinéraire</button>
+*/
 

@@ -1,18 +1,18 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type historiqueStyles = ("container" | "form" | "title" | "links" );
+export type historiqueStyles = ("grid" | "form" | "title" | "links" | "root" | "nested")
 
 export default (theme: Theme) => createStyles<historiqueStyles, {}>({
-    container: {
+    grid: {
         display: 'flex',
         flex: 1,
         flexDirection: "column",
 
-        
-        alignItems: 'center',
-        justifyContent: 'center'
+
+        alignItems: 'left',
+        justifyContent: 'left'
     },
-    
+
     form: {
         alignItems: 'center',
         backgroundColor: '#fff',
@@ -30,6 +30,16 @@ export default (theme: Theme) => createStyles<historiqueStyles, {}>({
         padding: '5px',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    root: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+    },
+    
+    nested: {
+        paddingLeft: theme.spacing(4),
     }
 
 });

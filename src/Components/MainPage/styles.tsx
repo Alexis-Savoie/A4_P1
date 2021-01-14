@@ -1,6 +1,6 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type loginStyles = ("container" | "form" | "title" | "links" );
+export type loginStyles = ("container" | "form" | "title" | "links" | "mapContainer" );
 
 export default (theme: Theme) => createStyles<loginStyles, {}>({
     container: {
@@ -30,6 +30,11 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
         padding: '5px',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    mapContainer: {
+        alignItems: 'left',
+        justifyContent: 'left'
     }
 
 });

@@ -8,125 +8,97 @@ import axios from 'axios';
 import history from '../../history'
 
 
+
+import List from '@material-ui/core/List';
+import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+
+
+
 interface P {
 }
 interface S {
-    origin: string,
-    waypoints: string,
+    history : Array<Object>,
+    isEmpty: boolean,
+    isRequestDone: boolean
 }
 
 export class HistoriquePage extends React.PureComponent<P & WithStyles<historiqueStyles>, S> {
 
-
-
     public static Display = withStyles(styles as any)(HistoriquePage) as React.ComponentType<P>
 
     public state: Readonly<S> = {
-        origin: "",
-        waypoints: "",
+        history : [{}],
+        isEmpty: false,
+        isRequestDone: false
     };
 
 
-    render() {
+    render () {
+        this.getHistory()
         const { classes } = this.props;
-        return (
-            <div>
-                <Grid container className={classes.container}>
-                    <Grid item className={classes.title}>
-                    <Typography component="h1" variant="h5">
-                            Historique
-                    </Typography>
-                    </Grid>
-
-
-                    <Grid item className={classes.form}>
-                        <form onSubmit={this.history}>
-
-
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    id="origin"
-                                    label="origin"
-                                    name="origin"
-                                    autoComplete="origin" onChange={this.changeVal}
-                                />
-                            </Grid><br />
-                            <Grid item xs={12}>
-                                <TextField
-                                    variant="outlined"
-                                    required
-                                    fullWidth
-                                    name="waypoints"
-                                    label="waypoints"
-                                    type="waypoints"
-                                    id="waypoints"
-                                    autoComplete="waypoints" onChange={this.changeVal}
-                                />
-                            </Grid>
-
-
-                            <br />
-                            <Button variant="contained" color="secondary" type='submit' fullWidth>
-                                Get History
-                            </Button>
-
-                        </form>
-                    </Grid>
-
-
-
+        const { history } = this.state;
+            return (
+            <div><div>
+                <Typography component="h1" variant="h5">Historique</Typography>
+                <Grid container spacing={1} className={classes.grid}>
+                    { history.map((item: any) => {
+                            let waypointsString = ""
+                            if (item.waypoints)
+                            {
+                                waypointsString = item.waypoints.split("|").join(", ");
+                            }
+                            // Generate a row for each itinerary of the history
+                            return (
+                                <Grid item >
+                                    <hr></hr>
+                                    <div>
+                                        <Grid>
+                                            <span>Point de départ : { item.origin }</span> 
+                                            <p>Points intermédiaire : { waypointsString } </p>
+                                        </Grid>
+                                    </div>
+                                </Grid>
+                                
+                            )
+                        })
+                    }
+                    
                 </Grid>
-            </div>
-
+                <hr></hr>
+            </div></div>
         );
-
     }
 
-
-    changeVal = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.currentTarget;
-        this.setState({ [name]: value } as Pick<S, keyof S>)
-    }
-
-    history = (e: React.FormEvent<HTMLFormElement>) => {
-        // Avoir to reload the page
-        e.preventDefault()
-        const data = {
-            origin: this.state.origin.trim(),
-            waypoints: this.state.waypoints.split('|')
-
-        }
-        // Check if values are valid (regex is for email syntax)
-        if (this.state.waypoints.split('|'))
+    getHistory() {
+        if (this.state.isRequestDone == false)
         {
-            alert("Identifint sythax est incorrect !")
-        }
-        else {
-            axios.post(`http://localhost:8020/history`, data)
-                .then(res => {
-                    console.log(res.data.message)
-                    localStorage.setItem('currentUserToken', res.data.token);
-                    if (res.data.history)
-                        localStorage.setItem('history', res.data.history);
+            this.setState({isRequestDone: true});
+            axios.get(process.env.REACT_APP_API_URL + `/getHistory/` + localStorage.getItem("currentUserToken"))
+            .then(res => {
+                this.setState({history: res.data.history});
+                
+                console.log("history")
+                console.log(this.state.history)
+            })
+            .catch(error => {
+                if (error.reponse) {
+                    //console.log(error.response.data)
+                    alert("Problème d'input'")
+                }
+                else {
+                    if (error.response.status === 403)
+                        alert("Adresse invalide")
                     else
-                        localStorage.setItem('history', "");
-                    history.push('/mainpage');
-                })
-                .catch(error => {
-                    if (error.reponse) {
-                        console.log(error.response.data)
-                        alert("Identifiants invalides !")
-                    }
-                    else {
-                        alert("Problème de serveur, réesayer plus tard")
-                    }
-
-                })
+                        alert("Problème serveur réesayer plus tard")
+                }
+            })
+            //this.setState({history: {itinerary : "lololololol"}});
         }
+
     }
-
-
 }

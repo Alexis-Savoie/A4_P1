@@ -80,9 +80,7 @@ export class changePassword extends React.PureComponent<P & WithStyles<loginStyl
                                 />
                             </Grid><br />
 
-                            <Button variant="contained" color="secondary" type='submit' fullWidth>
-                                Soumettre
-                            </Button>
+                            <Button variant="contained" color="secondary" type='submit' fullWidth>Soumettre</Button>
 
                         </form>
                     </Grid>
@@ -141,32 +139,3 @@ export class changePassword extends React.PureComponent<P & WithStyles<loginStyl
         }
     }
 }
-
-
-const InputPassword = withStyles({
-    root: {
-
-        marginBottom: '2rem',
-        color: 'white'
-    },
-})(TextField);
-
-
-const LoginButton = withStyles({
-    root: {
-        color: 'white',
-        backgroundColor: 'black',
-        height: '60px',
-        fontSize: '25px',
-        borderRadius: '10px',
-
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        textTransform: 'capitalize',
-        '&:hover': {
-            color: 'black',
-            backgroundColor: 'white',
-        },
-    },
-})(Button);
