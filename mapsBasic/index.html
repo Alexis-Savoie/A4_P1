@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Waypoints in Directions</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script ng-src="https://maps.googleapis.com/maps/api/js?key=%REACT_APP_GMAPS_API_KEY%&callback=initMap&libraries=&v=weekly" defer></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="right-panel">
+        <div>
+            <b>Start:</b>
+            <select id="start">
+                <option value="Arpajon 91290">Arpajon 91290</option>
+
+            </select>
+            <br />
+            <b>Waypoints:</b> <br />
+            <i>(Ctrl+Click or Cmd+Click for multiple selection)</i> <br />
+            <select multiple id="waypoints">
+                <option value="Etampes, 91223">Etampes, 91223</option>
+                <option value="Paris, 75000">Paris, 75000</option>
+            </select>
+            <br />
+            <b>End:</b>
+            <select id="end">
+                <option value="Dourdan,91200">Dourdan,91200</option>
+
+            </select>
+            <br />
+            <input type="submit" id="submit" />
+        </div>
+        <div id="directions-panel"></div>
+    </div>
+</body>
+
+</html>
