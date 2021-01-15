@@ -118,7 +118,7 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
       alert("Identifiants invalides !")
     }
     else {
-      axios.post(`http://localhost:8020/register`, data)
+      axios.post(process.env.REACT_APP_API_URL + `/register`, data)
         .then(res => {
           console.log(res.data.message)
           alert("Votre compte à été créer avec succès ! ")

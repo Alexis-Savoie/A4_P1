@@ -43,7 +43,6 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -83,19 +82,24 @@ export class ForgotPassword extends React.PureComponent<P & WithStyles<forgotpas
     e.preventDefault()
     const data = {
       email: this.state.email,
-
     }
+    // Check if values are valid (regex is for email syntax)
+    if (this.state.email.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null || this.state.email.trim() == "") {
+      alert("Email invalide !")
+    }
+    else {
 
-    axios.post('http://localhost:8020/sendTemporaryPassword', data).then(
-      res => {
-        console.log(res)
-        alert("Un mot de passe temporaire à été envoyé sur votre boite mail")
-      }
-    ).catch(
-      err => {
-        alert("Erreur serveur, réessayer plus tard !")
-      }
-    )
+      axios.post(process.env.REACT_APP_API_URL + '/sendTemporaryPassword', data).then(
+        res => {
+          console.log(res)
+          alert("Un mot de passe temporaire à été envoyé sur votre boite mail")
+        }
+      ).catch(
+        err => {
+          alert("Erreur serveur, réessayer plus tard !")
+        }
+      )
+    }
   }
 
 }
