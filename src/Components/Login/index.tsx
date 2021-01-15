@@ -118,9 +118,14 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
                     history.push('/mainpage');
                 })
                 .catch(error => {
-                    if (error.reponse) {
+                    if (error.response) {
                         console.log(error.response.data)
-                        alert("Identifiants invalides !")
+                        if (error.response.data.message == "Incorrect username/password")
+                            alert("Identifiants invalides !")
+                        else if (error.response.data.message == "This user is currently blocked, please try later")
+                            alert("Cet utilisateur est bloqué, réessayer plus tard.")
+                        else
+                            alert("Identifiants invalides !")
                     }
                     else {
                         alert("Problème de serveur, réesayer plus tard")

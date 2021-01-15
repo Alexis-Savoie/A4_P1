@@ -36,10 +36,12 @@ export class Logout extends React.PureComponent<P & WithStyles<logoutStyles>, S>
         .catch(error => {
             if (error.reponse) {
                 console.log(error.response.data)
-                alert("Erreur ! Réesayer plus tard")
+                localStorage.removeItem("currentUserToken")
+                history.push('/login');
             }
             else {
-                alert("Problème de serveur, réesayer plus tard")
+                localStorage.removeItem("currentUserToken")
+                history.push('/login');
             }
 
         })

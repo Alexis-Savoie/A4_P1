@@ -147,70 +147,79 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
 
 
     getRoute() {
-        const list = this.state.list.slice();
-        // For checking if there no empty field
-        let validLocation = true
-        let waypointsURL = ""
-        for (let i = 0; i < list.length; i++) {
-            if (list[i] != "") {
-                if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
-                    waypointsURL += list[i] + "|"
+        function arraysEqual(a1:any,a2:any) {
+            /* WARNING: arrays must not contain {objects} or behavior may be undefined */
+            return JSON.stringify(a1)==JSON.stringify(a2);
+        }
+        let emptyLocation = [{ location: "" }]
+        if (arraysEqual(emptyLocation, this.state.list) || this.state.origin == "") {
+            alert("Location invalide !")
+        }
+        else {
+            const list = this.state.list.slice();
+            // For checking if there no empty field
+            let validLocation = true
+            let waypointsURL = ""
+            for (let i = 0; i < list.length; i++) {
+                if (list[i] != "") {
+                    if (JSON.stringify(list[i]) != JSON.stringify({ location: "" }))
+                        waypointsURL += list[i] + "|"
+                }
+                else
+                    validLocation = false
+            }
+
+            if (this.state.origin == "")
+                validLocation = false
+
+            if (validLocation) {
+                // Remove last |
+                waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
+
+
+                axios.get(process.env.REACT_APP_API_URL + `/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
+                    .then(res => {
+                        // If the itinerary was succesfully calculated then we add it to history
+                        let data = {
+                            token: localStorage.getItem('currentUserToken'),
+                            origin: this.state.origin,
+                            waypoints: waypointsURL
+                        }
+                        axios.post(process.env.REACT_APP_API_URL + `/addToHistory`, data)
+                            .then(res2 => {
+                                // Once we have the itinerary we can use the callback
+                                this.responseCallback(res.data)
+                            })
+                            .catch(error => {
+                                if (error.response) {
+                                    if (error.response.status == 403)
+                                        alert("Location invalide !")
+                                    else
+                                        alert("Erreur !, veuilleez réesayer plus tard !")
+                                }
+                                else {
+                                    alert("Problème serveur réesayer plus tard")
+                                }
+                            })
+                    })
+                    .catch(error => {
+                        if (error.reponse) {
+                            //console.log(error.response.data)
+                            alert("Problème d'input'")
+                        }
+                        else {
+                            if (error.response.status === 403)
+                                alert("Adresse invalide")
+                            else
+                                alert("Problème serveur réesayer plus tard")
+                        }
+                    })
+                this.requestIsDone = false
             }
             else
-                validLocation = false
+                alert("une ou plusieurs locations sont invalide !")
+
         }
-
-        if (this.state.origin == "")
-            validLocation = false
-
-        if (validLocation) {
-            // Remove last |
-            waypointsURL = waypointsURL.substring(0, waypointsURL.length - 1);
-
-
-            axios.get(process.env.REACT_APP_API_URL + `/getRoute/` + localStorage.getItem("currentUserToken") + `/` + this.state.origin + `/` + waypointsURL)
-                .then(res => {
-                    // If the itinerary was succesfully calculated then we add it to history
-                    let data = {
-                        token: localStorage.getItem('currentUserToken'),
-                        origin: this.state.origin,
-                        waypoints: waypointsURL
-                    }
-                    axios.post(process.env.REACT_APP_API_URL + `/addToHistory`, data)
-                        .then(res2 => {
-                            // Once we have the itinerary we can use the callback
-                            this.responseCallback(res.data)
-                        })
-                        .catch(error => {
-                            if (error.response) {
-                                if (error.response.status == 403)
-                                    alert("Location invalide !")
-                                else
-                                    alert("Erreur !, veuilleez réesayer plus tard !")
-                            }
-                            else {
-                                alert("Problème serveur réesayer plus tard")
-                            }
-                        })
-                })
-                .catch(error => {
-                    if (error.reponse) {
-                        //console.log(error.response.data)
-                        alert("Problème d'input'")
-                    }
-                    else {
-                        if (error.response.status === 403)
-                            alert("Adresse invalide")
-                        else
-                            alert("Problème serveur réesayer plus tard")
-                    }
-                })
-            this.requestIsDone = false
-        }
-        else
-            alert("une ou plusieurs locations sont invalide !")
-
-
     }
 
     responseCallback(res: any) {
@@ -277,14 +286,14 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
     render() {
         const { classes } = this.props;
         const style = {
-           display: 'flex',
-           margin: '-555px 80px 15px -12px',
-           with:'30px'
-           
-            
-          };
-      
-        
+            display: 'flex',
+            margin: '-555px 80px 15px -12px',
+            with: '30px'
+
+
+        };
+
+
         return (
             <div className="map">
                 <div className={classes.mapContainer}>
@@ -296,7 +305,7 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                             height: '500px',
                             margin: '45px 80px 15px 342px',
                             padding: '1rem',
-                            
+
                         }}
                         // required
                         zoom={this.state.zoom}
@@ -364,54 +373,55 @@ export class MainPage extends React.PureComponent<P & WithStyles<loginStyles>, S
                     </GoogleMap>
                 </div>
 
-                
-             <div style={style}>
-             <Card  >
-                   <CardContent>
-                   <Typography component="h5" variant="h5">Départ</Typography>
 
-         <input
-          name="origin"
-          placeholder="Départ"
-          value={this.state.origin}
-           onChange={e => this.handleInputChangeOrigin(e)}
-           />
-             <button onClick={this.getLocalization}>Utiliser Position Actuel</button>
-               <br></br>
-               <Typography component="h5" variant="h5">Points intermédiaire (Max 24)</Typography>
- 
-                   </CardContent>
+                <div style={style}>
+                    <Card  >
+                        <CardContent>
+                            <Typography component="h5" variant="h5">Départ</Typography>
 
-                   {this.state.list.map((x: any, i: any) => {
-                    return (
-                        <div>
-                            <div className="box">
-                                <input
-                                    name="location"
-                                    placeholder="Location"
-                                    value={x.location}
-                                    onChange={e => this.handleInputChange(e, i)}
-                                />
-                                {this.state.list.length > 1 && <button
-                                    className="mr10"
-                                    onClick={() => this.handleRemoveClick(i)}>X</button>}
-                                {this.state.list.length - 1 === i && <button onClick={this.handleAddClick}>+</button>}
-
-                            </div>
-                        </div>
-                    );
-                })}
-                <br></br>
-                <Button onClick={this.getRoute} variant="contained" color="secondary" type='submit' >Calculer Itinéraire</Button>
-                <br></br>
-                <br></br>
-                <Typography component="h5" variant="h5">{this.state.distance}</Typography>
-               </Card>
-             
-             </div>
+                            <input
+                                name="origin"
+                                placeholder="Départ"
+                                value={this.state.origin}
+                                onChange={e => this.handleInputChangeOrigin(e)}
+                            />
+                            <button onClick={this.getLocalization}>Utiliser Position Actuel</button>
+                            <br></br>
+                            <Typography component="h5" variant="h5">Points intermédiaire (Max 24)</Typography>
 
 
-             
+
+                            {this.state.list.map((x: any, i: any) => {
+                                return (
+                                    <div>
+                                        <div className="box">
+                                            <input
+                                                name="location"
+                                                placeholder="Location"
+                                                value={x.location}
+                                                onChange={e => this.handleInputChange(e, i)}
+                                            />
+                                            {this.state.list.length > 1 && <button
+                                                className="mr10"
+                                                onClick={() => this.handleRemoveClick(i)}>X</button>}
+                                            {this.state.list.length - 1 === i && <button onClick={this.handleAddClick}>+</button>}
+
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            <br></br>
+                            <Button onClick={this.getRoute} variant="contained" color="secondary" type='submit' >Calculer Itinéraire</Button>
+                            <br></br>
+                            <br></br>
+                            <Typography component="h5" variant="h5">{this.state.distance}</Typography>
+                        </CardContent>
+                    </Card>
+
+                </div>
+
+
+
             </div>
         )
     }

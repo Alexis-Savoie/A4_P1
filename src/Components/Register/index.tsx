@@ -121,6 +121,7 @@ export class Register extends React.PureComponent<P & WithStyles<registerStyles>
       axios.post(`http://localhost:8020/register`, data)
         .then(res => {
           console.log(res.data.message)
+          alert("Votre compte à été créer avec succès ! ")
           history.push('/login');
         })
         .catch(error => {
