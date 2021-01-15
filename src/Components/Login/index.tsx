@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import styles, { loginStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
-
+import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
 import history from '../../history'
@@ -36,19 +36,44 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
             <div>
                 <Grid container className={classes.container}>
                     <Grid item className={classes.title}>
-                        <h2>Se connecter</h2>
+                        <Typography component="h1" variant="h5">
+                            Connexion
+        </Typography>
                     </Grid>
 
 
                     <Grid item className={classes.form}>
                         <form onSubmit={this.login}>
-                            <InputLabel htmlFor="my-input">Email</InputLabel>
-                            <InputEmail id="email" name="email" onChange={this.changeVal} />
 
-                            <InputLabel htmlFor="my-input">Mot de passe</InputLabel>
-                            <InputPassword id="password" name="password" onChange={this.changeVal} type="password" />
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    id="email"
+                                    label="Email"
+                                    name="email"
+                                    autoComplete="email" onChange={this.changeVal}
+                                />
+                            </Grid><br />
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    name="password"
+                                    label="Mot de passe"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="current-password" onChange={this.changeVal}
+                                />
+                            </Grid>
+
                             <br />
-                            <LoginButton variant="contained" color="secondary" type='submit'>Connexion</LoginButton>
+                            <Button variant="contained" color="secondary" type='submit' fullWidth>
+                                Soumettre
+                            </Button>
+
                         </form>
                     </Grid>
 
@@ -57,7 +82,7 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
                     </Grid>
 
                     <Grid item className={classes.links}>
-                        <Link to="/register">Mot de passe oublié ?</Link>
+                        <Link to="/forgotpassword">Mot de passe oublié ?</Link>
                     </Grid>
                 </Grid>
             </div>
@@ -78,8 +103,11 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
             password: this.state.password,
         }
         // Check if values are valid (regex is for email syntax)
-        if (this.state.email.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null || this.state.email.trim() == "" || this.state.password == "") 
-        {
+        // Check if values are valid (regex is for email syntax)
+        if (this.state.email == "" || this.state.password == "") {
+            alert("Identifiants invalides !")
+        }
+        else if (this.state.email.trim().match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) == null || this.state.email.trim() == "" || this.state.password == "") {
             alert("Identifiants invalides !")
         }
         else {
@@ -90,9 +118,14 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
                     history.push('/mainpage');
                 })
                 .catch(error => {
-                    if (error.reponse) {
+                    if (error.response) {
                         console.log(error.response.data)
-                        alert("Identifiants invalides !")
+                        if (error.response.data.message == "Incorrect username/password")
+                            alert("Identifiants invalides !")
+                        else if (error.response.data.message == "This user is currently blocked, please try later")
+                            alert("Cet utilisateur est bloqué, réessayer plus tard.")
+                        else
+                            alert("Identifiants invalides !")
                     }
                     else {
                         alert("Problème de serveur, réesayer plus tard")
@@ -106,38 +139,3 @@ export class Login extends React.PureComponent<P & WithStyles<loginStyles>, S> {
 
 }
 
-
-const InputEmail = withStyles({
-    root: {
-
-        marginBottom: '2rem',
-        color: 'white'
-    },
-})(TextField);
-
-const InputPassword = withStyles({
-    root: {
-
-        marginBottom: '2rem',
-        color: 'white'
-    },
-})(TextField);
-
-const LoginButton = withStyles({
-    root: {
-        color: 'white',
-        backgroundColor: 'black',
-        height: '60px',
-        fontSize: '25px',
-        borderRadius: '10px',
-
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        textTransform: 'capitalize',
-        '&:hover': {
-            color: 'black',
-            backgroundColor: 'white',
-        },
-    },
-})(Button);

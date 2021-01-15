@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import styles, { loginStyles } from "./styles"
 import { Grid, TextField, Button, withStyles, WithStyles } from "@material-ui/core"
 import { Link } from 'react-router-dom';
-
+import Typography from '@material-ui/core/Typography';
 import InputLabel from '@material-ui/core/InputLabel';
 import axios from 'axios';
 import history from '../../history'
@@ -33,33 +33,56 @@ export class changePassword extends React.PureComponent<P & WithStyles<loginStyl
 
     render() {
         const { classes } = this.props;
+        
         return (
             <div>
                 <Grid container className={classes.container}>
                     <Grid item className={classes.title}>
-                        <h2>Changer de mot de passe</h2>
+                        <Typography component="h1" variant="h5">Changer de mot de passe</Typography>
                     </Grid>
 
 
                     <Grid item className={classes.form}>
                         <form onSubmit={this.submitPasswordChange}>
-                            <InputLabel >Mot de passe actuel</InputLabel>
-                            <InputPassword id="oldPassword" name="oldPassword" onChange={this.changeVal} type="password" />
-                            <InputLabel>Nouveau mot de passe</InputLabel>
-                            <InputPassword id="newPassword" name="newPassword" onChange={this.changeVal} type="password" />
-                            <InputLabel>Confirmer le mot de passe</InputLabel>
-                            <InputPassword id="newPassword2" name="newPassword2" onChange={this.changeVal} type="password" />
-                            <br />
-                            <LoginButton variant="contained" color="secondary" type='submit'>Soumettre</LoginButton>
+
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    id="oldPassword"
+                                    label="Mot de passe actuel"
+                                    type="password"
+                                    name="oldPassword"
+                                    autoComplete="origin" onChange={this.changeVal}
+                                />
+                            </Grid><br />
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    name="newPassword"
+                                    label="Nouveau mot de passe"
+                                    type="password"
+                                    id="newPassword"
+                                    autoComplete="waypoints" onChange={this.changeVal}
+                                />
+                            </Grid><br />
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    fullWidth
+                                    name="newPassword2"
+                                    label="Confirmer le mot de passe"
+                                    type="password"
+                                    id="newPassword2"
+                                    autoComplete="waypoints" onChange={this.changeVal}
+                                />
+                            </Grid><br />
+
+                            <Button variant="contained" color="secondary" type='submit' fullWidth>Soumettre</Button>
+
                         </form>
-                    </Grid>
-
-                    <Grid item className={classes.links}>
-                        <Link to="/register">S'inscrire</Link>
-                    </Grid>
-
-                    <Grid item className={classes.links}>
-                        <Link to="/register">Mot de passe oublié ?</Link>
                     </Grid>
 
 
@@ -100,43 +123,19 @@ export class changePassword extends React.PureComponent<P & WithStyles<loginStyl
                         history.push('/mainpage');
                     })
                     .catch(error => {
-                        if (error.reponse) {
+                        if (error.response) {
                             console.log(error.response.data)
-                            //alert("Problème de serveur, réesayer plus tard")
+                            if (error.response.status == 401)
+                                alert("Mot de passe incorrect !")
+                            else
+                                alert("Erreur ! Réesayer plus tard")
                         }
                         else {
-                            //alert("Problème de serveur, réesayer plus tard")
+                            console.log(error)
+                            alert("Problème de serveur, réesayer plus tard")
                         }
                     })
             }
         }
     }
 }
-
-
-const InputPassword = withStyles({
-    root: {
-
-        marginBottom: '2rem',
-        color: 'white'
-    },
-})(TextField);
-
-const LoginButton = withStyles({
-    root: {
-        color: 'white',
-        backgroundColor: 'black',
-        height: '60px',
-        fontSize: '25px',
-        borderRadius: '10px',
-
-        alignItems: 'center',
-        justifyContent: 'center',
-
-        textTransform: 'capitalize',
-        '&:hover': {
-            color: 'black',
-            backgroundColor: 'white',
-        },
-    },
-})(Button);

@@ -1,25 +1,23 @@
 import { createStyles, Theme } from "@material-ui/core";
 
-export type loginStyles = ("container" | "form" | "title" | "links" );
+export type historiqueStyles = ("grid" | "form" | "title" | "links" | "root" | "nested")
 
-export default (theme: Theme) => createStyles<loginStyles, {}>({
-    container: {
+export default (theme: Theme) => createStyles<historiqueStyles, {}>({
+    grid: {
         display: 'flex',
         flex: 1,
         flexDirection: "column",
 
-        
-        alignItems: 'center',
-        justifyContent: 'center'
+
+        alignItems: 'left',
+        justifyContent: 'left'
     },
-    
+
     form: {
         alignItems: 'center',
         backgroundColor: '#fff',
         justifyContent: 'center',
         paddingBottom: '10px',
-        width: '20%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
     },
 
     title: {
@@ -32,6 +30,16 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
         padding: '5px',
         alignItems: 'center',
         justifyContent: 'center'
+    },
+
+    root: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+    },
+    
+    nested: {
+        paddingLeft: theme.spacing(4),
     }
 
 });

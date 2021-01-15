@@ -5,10 +5,13 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-
+import { ForgotPassword } from "../ForgotPassWord"
 import { changePassword } from "../changePassword"
+import { HistoriquePage } from "../Historique"
+import { Logout } from "../logout"
 import { MainPage } from "../MainPage"
-
+import { Register } from "../Register"
+import history from '../../history'
 
 
 interface TabPanelProps {
@@ -44,6 +47,7 @@ function a11yProps(index: any) {
     };
 }
 
+
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
         flexGrow: 1,
@@ -64,16 +68,24 @@ export default function SimpleTabs() {
             <AppBar position="static">
                 <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                     <Tab label="Carte" {...a11yProps(0)} />
-                    <Tab label="Changer mot de passe" {...a11yProps(1)} />
-
+                    <Tab label="Historique" {...a11yProps(1)} />
+                    <Tab label="Changer mot de passe" {...a11yProps(2)} />
+                    <Tab label="Déconnexion" {...a11yProps(2)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
                 <MainPage.Display />
             </TabPanel>
             <TabPanel value={value} index={1}>
+                <HistoriquePage.Display />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
                 <changePassword.Display />
             </TabPanel>
+            <TabPanel value={value} index={3}>
+                <Logout.Display />
+            </TabPanel>
+
 
         </div>
     );

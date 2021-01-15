@@ -1,8 +1,9 @@
+
 import { createStyles, Theme } from "@material-ui/core";
 
-export type loginStyles = ("container" | "form" | "title" | "links" );
+export type forgotpasswordStyles = ("container" | "form" | "title" | "links" );
 
-export default (theme: Theme) => createStyles<loginStyles, {}>({
+export default (theme: Theme) => createStyles<forgotpasswordStyles, {}>({
     container: {
         display: 'flex',
         flex: 1,
@@ -35,4 +36,3 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
     }
 
 });
-

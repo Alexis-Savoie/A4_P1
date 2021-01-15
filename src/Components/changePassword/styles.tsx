@@ -13,7 +13,9 @@ export default (theme: Theme) => createStyles<loginStyles, {}>({
     },
     
     form: {
-
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        justifyContent: 'center',
         paddingBottom: '10px',
     },
 
